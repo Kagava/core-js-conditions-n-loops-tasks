@@ -307,22 +307,16 @@ function isContainNumber(num, digit) {
  */
 function getBalanceIndex(arr) {
   if (arr.length === 0) return -1;
-  let flagEnd = true;
-  let leftIndex = 0;
-  let rightIndex = arr.length - 1;
   let sumLeft = 0;
-  let sumRight = 0;
-  while (flagEnd) {
-    if (sumLeft <= sumRight) {
-      sumLeft += arr[leftIndex];
-      leftIndex += 1;
-    } else {
-      sumRight += arr[rightIndex];
-      rightIndex -= 1;
+  for (let i = 0; i < arr.length; i += 1) {
+    sumLeft += arr[i];
+    let sumRight = 0;
+    for (let j = arr.length - 1; j >= i + 2; j -= 1) {
+      sumRight += arr[j];
     }
-    if (leftIndex === rightIndex) flagEnd = false;
+    if (sumLeft === sumRight) return i + 1;
   }
-  return sumLeft === sumRight ? leftIndex : -1;
+  return -1;
 }
 
 /**
