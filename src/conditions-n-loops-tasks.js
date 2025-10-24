@@ -388,9 +388,26 @@ function getSpiralMatrix(size) {
  *    [4, 5, 6],  =>    [8, 5, 2],
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
+ * let resMatrix = matrix;
+ * resMatrix = tempMatrix; it worked inside a browser
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const countRow = matrix.length;
+  const countColumn = matrix.length;
+  const tempMatrix = [];
+  for (let i = 0; i < countRow; i += 1) {
+    tempMatrix[i] = [];
+  }
+  for (let i = 0; i < countRow; i += 1) {
+    for (let j = 0; j < countColumn; j += 1) {
+      tempMatrix[j][countRow - 1 - i] = matrix[i][j];
+    }
+  }
+  const resMatrix = matrix;
+  for (let i = 0; i < countRow; i += 1) {
+    resMatrix[i] = [...tempMatrix[i]];
+  }
+  return resMatrix;
 }
 
 /**
@@ -407,8 +424,36 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function separation(arr, l, r) {
+  const newArr = arr;
+  const middleElement = arr[Math.floor((l + r) / 2)];
+  let i = l;
+  let j = r;
+  while (i <= j) {
+    while (arr[i] < middleElement) {
+      i += 1;
+    }
+    while (arr[j] > middleElement) {
+      j -= 1;
+    }
+    if (i >= j) break;
+    [newArr[i], newArr[j]] = [arr[j], arr[i]];
+    i += 1;
+    j -= 1;
+  }
+  return j;
+}
+function quick(arr, l, r) {
+  if (l < r) {
+    const middleIndex = separation(arr, l, r);
+    quick(arr, l, middleIndex);
+    quick(arr, middleIndex + 1, r);
+  }
+}
+
+function sortByAsc(arr) {
+  quick(arr, 0, arr.length - 1);
+  return arr;
 }
 
 /**
